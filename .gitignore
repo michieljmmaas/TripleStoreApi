@@ -1,5 +1,28 @@
-bin/
-obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+﻿## Ignore Visual Studio/Rider build artifacts
+[Bb]in/
+[Oo]bj/
+
+## .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## IDE - Rider/IntelliJ
+.idea/
+*.sln.DotSettings.user
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+## Visual Studio
+.vs/
+*.vssscc
+*.vspsucc
+
+## OS generated files
+.DS_Store
+Thumbs.db
+
+## Docker
+docker/data/

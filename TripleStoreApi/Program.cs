@@ -14,14 +14,19 @@ builder.Host.UseSerilog();
 builder.Services.AddHttpClient<ISparqlService, SparqlService>();
 
 // Swagger
+builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Middleware
+app.MapOpenApi();
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/openapi/v1.json", "v1");
+});
 
 // Map routes
 app.MapGraphEndpoints();

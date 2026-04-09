@@ -1,0 +1,26 @@
+@prefix ex:   <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+ex:alice a foaf:Person ;
+    foaf:name "Alice Johnson" ;
+    foaf:age 30 ;
+    ex:worksAt ex:companyA .
+
+ex:bob a foaf:Person ;
+    foaf:name "Bob Smith" ;
+    foaf:age 25 ;
+    ex:worksAt ex:companyB .
+
+ex:carol a foaf:Person ;
+    foaf:name "Carol White" ;
+    foaf:age 35 ;
+    ex:worksAt ex:companyA .
+
+ex:companyA a ex:Company ;
+    ex:name "Acme Corp" ;
+    ex:industry "Technology" .
+
+ex:companyB a ex:Company ;
+    ex:name "Globex" ;
+    ex:industry "Finance" .

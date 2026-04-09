@@ -11,8 +11,7 @@ public static class GraphEndpoints
                 var results = await sparqlService.QueryTriplesAsync(limit);
                 return Results.Ok(results);
             })
-            .WithName("GetTriples")
-            .WithOpenApi();
+            .WithName("GetTriples");
 
         app.MapGet("/triples/query", async (ISparqlService sparqlService, string sparql) =>
             {
@@ -22,7 +21,6 @@ public static class GraphEndpoints
                 var results = await sparqlService.ExecuteQueryAsync(sparql);
                 return Results.Ok(results);
             })
-            .WithName("QueryTriples")
-            .WithOpenApi();
+            .WithName("QueryTriples");
     }
 }
