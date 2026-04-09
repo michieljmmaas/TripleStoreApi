@@ -9,4 +9,4 @@ services:
       - JVM_ARGS=-Xmx2g
     volumes:
       - ./data:/fuseki/data
-    command: ["--file=/fuseki/data/test-data.ttl", "/test"]
+    command: ["/jena-fuseki/fuseki-server", "--file=/fuseki/data/test-data.ttl", "/test"]

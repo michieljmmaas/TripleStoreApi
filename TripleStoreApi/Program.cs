@@ -1,6 +1,7 @@
 using Serilog;
 using TripleStoreApi.Endpoints;
 using TripleStoreApi.Services;
+using Scalar.AspNetCore;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -11,22 +12,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
 // Register services
-builder.Services.AddHttpClient<ISparqlService, SparqlService>();
+builder.Services.AddHttpClient<ISparqlService, SparqlService>(client =>
+{
+    client.DefaultRequestVersion = System.Net.HttpVersion.Version11;
+    client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+});
 
-// Swagger
+// OpenAPI
 builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Middleware
-app.MapOpenApi();
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/openapi/v1.json", "v1");
-});
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
 
 // Map routes
 app.MapGraphEndpoints();

@@ -1,8 +1,6 @@
 using System.Net;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using Moq;
-using Moq.Protected;
 using TripleStoreApi.Services;
 
 namespace TripleStoreApi.Tests;
@@ -19,8 +17,6 @@ public class SparqlServiceTests
                 { "Fuseki:EndpointUrl", "http://localhost:3030/ds/query" }
             })
             .Build();
-
-        var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
 
         // This is the expected SPARQL response in XML format (dotNetRDF SparqlQueryClient uses XML by default if not specified otherwise, or it might be content-negotiated).
         // Let's assume XML for now as it's common.
@@ -40,21 +36,14 @@ public class SparqlServiceTests
   </results>
 </sparql>";
 
-        handlerMock
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(new HttpResponseMessage
+        var handlerMock = new TestHttpMessageHandler((request, cancellationToken) => 
+            Task.FromResult(new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(sparqlResponse, Encoding.UTF8, "application/sparql-results+xml"),
-            })
-            .Verifiable();
+            }));
 
-        var httpClient = new HttpClient(handlerMock.Object);
+        var httpClient = new HttpClient(handlerMock);
         var service = new SparqlService(configuration, httpClient);
 
         // Act
@@ -67,12 +56,24 @@ public class SparqlServiceTests
         Assert.Equal("http://example.org/predicate", triple.Predicate);
         Assert.StartsWith("object", triple.Object);
 
-        handlerMock.Protected().Verify(
-            "SendAsync",
-            Times.Once(),
-            ItExpr.IsAny<HttpRequestMessage>(),
-            ItExpr.IsAny<CancellationToken>()
-        );
+        Assert.Equal(1, handlerMock.CallCount);
+    }
+
+    private class TestHttpMessageHandler : HttpMessageHandler
+    {
+        private readonly Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _sendAsync;
+        public int CallCount { get; private set; }
+
+        public TestHttpMessageHandler(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> sendAsync)
+        {
+            _sendAsync = sendAsync;
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            CallCount++;
+            return _sendAsync(request, cancellationToken);
+        }
     }
 
     [Fact]

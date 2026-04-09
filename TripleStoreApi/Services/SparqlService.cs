@@ -13,6 +13,8 @@ public class SparqlService : ISparqlService
         var endpointUrl = configuration["Fuseki:EndpointUrl"]
                           ?? throw new InvalidOperationException("Fuseki endpoint not configured.");
 
+        Log.Information("Initializing SparqlService with endpoint: {EndpointUrl}", endpointUrl);
+
         _client = new SparqlQueryClient(httpClient, new Uri(endpointUrl));
     }
 
