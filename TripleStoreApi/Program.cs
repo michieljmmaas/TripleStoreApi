@@ -31,4 +31,4 @@ if (app.Environment.IsDevelopment())
 // Map routes
 app.MapGraphEndpoints();
 
-app.Run();
+await app.RunAsync();
