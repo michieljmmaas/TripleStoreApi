@@ -22,9 +22,21 @@ public class SparqlService : ISparqlService
 
         return results.Select(r => new TripleResult
         {
-            Subject = r["s"].ToString(),
-            Predicate = r["p"].ToString(),
-            Object = r["o"].ToString()
+            Subject = r.HasValue("s") ? r["s"].ToString() : string.Empty,
+            Predicate = r.HasValue("p") ? r["p"].ToString() : string.Empty,
+            Object = r.HasValue("o") ? r["o"].ToString() : string.Empty
+        });
+    }
+
+    public async Task<IEnumerable<QueryResult>> ExecuteQueryAsync(string sparql)
+    {
+        var results = await _client.QueryWithResultSetAsync(sparql);
+
+        return results.Select(r => new QueryResult
+        {
+            Bindings = r.Variables
+                .Where(v => r.HasValue(v))
+                .ToDictionary(v => v, v => r[v].ToString() ?? string.Empty)
         });
     }
 }

@@ -16,8 +16,10 @@ public static class GraphEndpoints
 
         app.MapGet("/triples/query", async (ISparqlService sparqlService, string sparql) =>
             {
-                // For raw SPARQL queries passed as a query string parameter
-                var results = await sparqlService.QueryTriplesAsync(10);
+                if (string.IsNullOrWhiteSpace(sparql))
+                    return Results.BadRequest("A SPARQL query must be provided.");
+
+                var results = await sparqlService.ExecuteQueryAsync(sparql);
                 return Results.Ok(results);
             })
             .WithName("QueryTriples")
