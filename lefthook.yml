@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  commands:
+    csharpier:
+      glob: "*.cs"
+      run: dotnet csharpier format {staged_files}
+      stage_fixed: true
