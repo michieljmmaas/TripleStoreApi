@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 #
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleStoreApi", "TripleStoreApi\TripleStoreApi.csproj", "{FE6AC34A-BCA0-4B01-BBE3-D96C3EFDB02B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleStoreApi.tests", "TripleStoreApi.Tests\TripleStoreApi.tests.csproj", "{DBA08C30-5776-4128-AE3A-47CAE690FD30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripleStoreApi.tests", "TripleStoreApi.tests\TripleStoreApi.tests.csproj", "{DBA08C30-5776-4128-AE3A-47CAE690FD30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
