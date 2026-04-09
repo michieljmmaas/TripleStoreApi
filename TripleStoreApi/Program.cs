@@ -1,11 +1,9 @@
+using Scalar.AspNetCore;
 using Serilog;
 using TripleStoreApi.Endpoints;
 using TripleStoreApi.Services;
-using Scalar.AspNetCore;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateLogger();
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
