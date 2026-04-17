@@ -10,3 +10,16 @@ services:
     volumes:
       - ./data:/fuseki/data
     command: ["/jena-fuseki/fuseki-server", "--file=/fuseki/data/test-data.ttl", "/test"]
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: triplestore-app
+    ports:
+      - "3000:3000"
+    environment:
+      - ASPNETCORE_URLS=http://+:3000
+      - Fuseki__EndpointUrl=http://fuseki:3030/test/query
+    depends_on:
+      - fuseki

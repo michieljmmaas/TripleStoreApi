@@ -29,6 +29,14 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
+        "DockerWatch": {
+            "commandName": "Project",
+            "launchBrowser": false,
+            "dotnetRunMessages": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
         "IIS Express": {
             "commandName": "IISExpress",
             "launchBrowser": true,

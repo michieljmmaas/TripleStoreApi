@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      target: build
+    volumes:
+      - ..:/src
+      - /src/TripleStoreApi/bin/
+      - /src/TripleStoreApi/obj/
+    working_dir: /src/TripleStoreApi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+    command: dotnet watch run --no-hot-reload --launch-profile DockerWatch
